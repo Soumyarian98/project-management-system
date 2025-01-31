@@ -5,7 +5,7 @@ import { db } from "./db";
 const migrationsDir = path.join(__dirname, "migrations");
 
 async function runMigrations() {
-	const files = fs.readdirSync(migrationsDir).sort(); // Sort files to ensure correct order
+	const files = fs.readdirSync(migrationsDir).sort();
 	const client = await db.query("SELECT 1");
 
 	console.log("Connected to the database.");

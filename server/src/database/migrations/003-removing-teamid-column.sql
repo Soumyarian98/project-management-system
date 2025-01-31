@@ -1,10 +1,8 @@
-ALTER TABLE users DROP COLUMN teamId;
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS userTeams(
+CREATE TABLE IF NOT EXISTS user_teams(
     id SERIAL PRIMARY KEY,
-    userId INTEGER NOT NULL,
-    teamId INTEGER NOT NUll,
+    user_id INTEGER NOT NULL,
+    team_id INTEGER NOT NUll,
 
-    CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES users(userId),
-    CONSTRAINT fk_team FOREIGN KEY (teamId) REFERENCES teams(id)
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
+    CONSTRAINT fk_team FOREIGN KEY (team_id) REFERENCES teams(id)
 );

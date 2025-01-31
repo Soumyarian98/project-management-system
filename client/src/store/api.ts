@@ -17,7 +17,7 @@ export enum PriorityEnum {
 
 export interface Project {
 	id: number;
-	projectname: string;
+	projectName: string;
 	description?: string;
 	startDate?: string;
 	endDate?: string;

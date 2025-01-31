@@ -12,7 +12,12 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const createProject = async (req: Request, res: Response) => {
 	try {
-		const columns = ["projectName", "description", "startDate", "endDate"];
+		const projects = await sql`DROP TABLE projects;`;
+		console.log(projects);
+		const columns = ["projectName", "description", "startDate"];
+		if ("endDate" in req.body) {
+			columns.push("endDate");
+		}
 		const project =
 			await sql`INSERT INTO projects ${sql(req.body, columns)} RETURNING *;`;
 		if (project.length === 0) {
@@ -20,6 +25,7 @@ export const createProject = async (req: Request, res: Response) => {
 		}
 		res.status(201).json(project);
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({ message: "Failed to create row." });
 	}
 };

@@ -1,11 +1,11 @@
-version: '3'
+version: '3.9'
 services:
   postgres:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: "project_mangement_user"
-      POSTGRES_PASSWORD: "project_mangement_password"
+      POSTGRES_USER: "project_management_user"
+      POSTGRES_PASSWORD: "project_management_password"
       POSTGRES_DB: "project_management_db"
     ports:
       - '5432:5432'

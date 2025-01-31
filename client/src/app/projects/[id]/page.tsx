@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Filter, Grid, Share } from "lucide-react";
+import { Filter, Grid, PlusSquare, Share } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import BoardView from "../_components/board-view/BoardView";
 import TableView from "../_components/table-view/TableView";
@@ -19,6 +19,9 @@ const ProjectPage = async ({ params }: Props) => {
 				<h1 className="text-lg md:text-2xl font-bold">
 					Product Design Development
 				</h1>
+				<Button>
+					<PlusSquare className="w-4 h-4" /> New Board
+				</Button>
 			</div>
 			<Tabs defaultValue="board">
 				<div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
