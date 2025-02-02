@@ -34,8 +34,10 @@ const TaskCard = ({ task }: Props) => {
 		}),
 	}));
 
-	const startDate = task.startDate ? format(new Date(task.startDate), "P") : "";
-	const dueDate = task.dueDate ? format(new Date(task.dueDate), "P") : "";
+	const startDate = task.start_date
+		? format(new Date(task.start_date), "P")
+		: "";
+	const dueDate = task.due_date ? format(new Date(task.due_date), "P") : "";
 
 	return (
 		<div

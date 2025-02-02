@@ -17,10 +17,10 @@ export enum PriorityEnum {
 
 export interface Project {
 	id: number;
-	projectName: string;
+	project_name: string;
 	description?: string;
-	startDate?: string;
-	endDate?: string;
+	start_date?: string;
+	end_date?: string;
 }
 
 export interface Task {
@@ -30,12 +30,18 @@ export interface Task {
 	status?: StatusEnum;
 	priority?: PriorityEnum;
 	tags?: string[];
-	startDate?: string;
-	dueDate?: string;
-	points?: string;
-	projectId?: number;
-	authorUserId?: number;
-	assignedUserId?: number;
+	start_date?: string;
+	due_date?: string;
+	points?: number;
+	project_id?: number;
+	author_user_id?: number;
+	assigned_user_id?: number;
+}
+
+export interface SearchResponse {
+	users?: unknown[];
+	projects?: Project[];
+	tasks?: Task[];
 }
 
 export const api = createApi({
@@ -83,6 +89,9 @@ export const api = createApi({
 				{ type: "tasks", id: taskId },
 			],
 		}),
+		search: builder.query<SearchResponse, string>({
+			query: (query) => `/search?query=${query}`,
+		}),
 	}),
 });
 
@@ -92,4 +101,5 @@ export const {
 	useGetTasksQuery,
 	useCreateTasksMutation,
 	useUpdateTaskStatusMutation,
+	useSearchQuery,
 } = api;

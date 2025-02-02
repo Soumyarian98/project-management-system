@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import { query, type Request, type Response } from "express";
 import sql from "../database/db-client";
 
 export const getTasks = async (req: Request, res: Response) => {
@@ -8,7 +8,7 @@ export const getTasks = async (req: Request, res: Response) => {
 			res.status(400).json({ message: "Project id required." });
 		} else {
 			const tasks =
-				await sql`SELECT * FROM tasks WHERE projectId=${projectId as string}`;
+				await sql`SELECT * FROM tasks WHERE project_id=${projectId as string}`;
 			res.json(tasks);
 		}
 	} catch (error) {
@@ -24,18 +24,19 @@ export const createTask = async (req: Request, res: Response) => {
 			"status",
 			"priority",
 			"tags",
-			"startDate",
-			"dueDate",
+			"start_date",
+			"due_date",
 			"points",
-			"projectId",
-			"authorUserId",
-			"assignedUserId",
+			"project_id",
+			"author_user_id",
 		];
+		if (req.body.assigned_user_id) columns.push("assigned_user_id");
+
 		const task =
 			await sql`INSERT INTO tasks ${sql(req.body, columns)} RETURNING *;`;
 		res.status(201).json(task);
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		res.status(500).json({ message: "Failed to create task." });
 	}
 };
@@ -62,3 +63,30 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
 		res.status(500).json({ message: "Failed to update the task." });
 	}
 };
+
+// class PriorityQueue {
+// 	queue: { priority: number; message: string }[];
+
+// 	constructor() {
+// 		this.queue = [];
+// 	}
+
+// 	insert(val: { priority: number; message: string }) {
+// 		if (this.queue.length === 0) {
+// 			this.queue.push(val);
+// 			return;
+// 		}
+
+// 		for (let i = 0; i < this.queue.length; i++) {
+// 			if (val.priority >= this.queue[i].priority) {
+// 				this.queue.splice(i, 0, val);
+// 				return;
+// 			}
+// 		}
+// 		this.queue.push(val);
+// 	}
+
+// 	pop() {
+// 		return this.queue.shift(); // Returns and removes the highest priority element
+// 	}
+// }

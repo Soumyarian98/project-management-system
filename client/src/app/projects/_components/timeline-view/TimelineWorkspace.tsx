@@ -9,6 +9,7 @@ import {
 } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import type { Task } from "@/store/api";
+// @ts-expect-error below is a js lib without types
 import space from "color-space";
 
 import {
@@ -35,7 +36,7 @@ const TimelineWorkspace = ({ tasks }: Props) => {
 	});
 
 	const ganttTasks = useMemo(() => {
-		return tasks.map((t) => {
+		return tasks.map(() => {
 			return {
 				start: new Date(2020, 1, 1),
 				end: new Date(2020, 4, 2),

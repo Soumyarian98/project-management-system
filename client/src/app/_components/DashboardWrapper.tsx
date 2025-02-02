@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import { SidebarProvider } from "../../components/ui/sidebar";
 import NavBar from "./NavBar";
 import { store } from "@/store";
-import { ThemeProvider } from "./ThemeProvider";
 import AppSidebar from "./app-sidebar";
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {

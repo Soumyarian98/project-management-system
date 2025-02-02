@@ -1,18 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { Loader2, PlusSquare } from "lucide-react";
 import {
 	Form,
@@ -26,61 +20,97 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/date-picker";
 import { type Project, useCreateProjectMutation } from "@/store/api";
+import { toast } from "sonner";
+import Modal from "@/components/modal";
 
 const formSchema = z.object({
-	projectName: z.string().min(2).max(50),
+	project_name: z.string().min(2).max(50),
 	description: z.string(),
-	startDate: z.date().optional(),
-	endDate: z.date().optional(),
+	start_date: z.date().optional(),
+	end_date: z.date().optional(),
 });
 
 const CreateProjectDialog = () => {
+	const dialogTriggerRef = useRef<HTMLButtonElement>(null);
 	const [createProject, { isLoading }] = useCreateProjectMutation();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			projectName: "",
+			project_name: "",
 			description: "",
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		const body: Partial<Project> = {
-			projectName: values.projectName,
+			project_name: values.project_name,
 			description: values.description,
 		};
-		if (values.startDate) {
-			body.startDate = values.startDate?.toISOString();
+		if (values.start_date) {
+			body.start_date = values.start_date?.toISOString();
 		}
-		if (values.endDate) {
-			body.startDate = values.endDate?.toISOString();
+		if (values.end_date) {
+			body.start_date = values.end_date?.toISOString();
 		}
-		createProject(body);
-	}
+		createProject(body)
+			.unwrap()
+			.then(() => {
+				toast.success("Project created successfully");
+				dialogTriggerRef.current?.click();
+			})
+			.catch(() => {
+				toast.error("Failed to create project");
+			});
+	};
 
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<Button>
+		<Modal
+			trigger={
+				<Button ref={dialogTriggerRef}>
 					<PlusSquare />
 					Create Project
 				</Button>
-			</DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Create Project</DialogTitle>
-				</DialogHeader>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+			}
+			title="Create Project"
+		>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+					<FormField
+						control={form.control}
+						name="project_name"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Project Name</FormLabel>
+								<FormControl>
+									<Input placeholder="shadcn" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Description</FormLabel>
+								<FormControl>
+									<Textarea placeholder="shadcn" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<div className="grid grid-cols-2 gap-6">
 						<FormField
 							control={form.control}
-							name="projectName"
+							name="start_date"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Project Name</FormLabel>
+									<FormLabel>Start Date</FormLabel>
 									<FormControl>
-										<Input placeholder="shadcn" {...field} />
+										<DatePicker date={field.value} setDate={field.onChange} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -88,62 +118,37 @@ const CreateProjectDialog = () => {
 						/>
 						<FormField
 							control={form.control}
-							name="description"
+							name="end_date"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Description</FormLabel>
+									<FormLabel>End Date</FormLabel>
 									<FormControl>
-										<Textarea placeholder="shadcn" {...field} />
+										<DatePicker date={field.value} setDate={field.onChange} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
-						<div className="grid grid-cols-2 gap-6">
-							<FormField
-								control={form.control}
-								name="startDate"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Start Date</FormLabel>
-										<FormControl>
-											<DatePicker date={field.value} setDate={field.onChange} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="endDate"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>End Date</FormLabel>
-										<FormControl>
-											<DatePicker date={field.value} setDate={field.onChange} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="flex justify-between">
-							<Button
-								variant="secondary"
-								type="button"
-								onClick={() => form.reset()}
-							>
-								Reset
-							</Button>
-							<Button type="submit" disabled={isLoading}>
-								{isLoading ? <Loader2 className="animate-spin" /> : null}
-								Submit
-							</Button>
-						</div>
-					</form>
-				</Form>
-			</DialogContent>
-		</Dialog>
+					</div>
+					<div className="flex justify-between">
+						<Button
+							variant="secondary"
+							type="button"
+							onClick={() => form.reset()}
+						>
+							Reset
+						</Button>
+						<Button
+							type="submit"
+							disabled={isLoading || !form.formState.isValid}
+						>
+							{isLoading ? <Loader2 className="animate-spin" /> : null}
+							Submit
+						</Button>
+					</div>
+				</form>
+			</Form>
+		</Modal>
 	);
 };
 

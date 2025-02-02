@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input";
 import BoardView from "../_components/board-view/BoardView";
 import TableView from "../_components/table-view/TableView";
 import TimeLineView from "../_components/timeline-view/TimeLineView";
+import CreateTaskDialog from "../_components/CreateTaskDialog";
 
-type Props = {
-	params: { id: string };
-};
+const ProjectPage = async ({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) => {
+	const projectId = (await params).id;
 
-const ProjectPage = async ({ params }: Props) => {
-	const { id: projectId } = await params;
 	return (
 		<div>
 			<div className="flex justify-between items-center mb-4 md:mb-6">
@@ -24,15 +26,14 @@ const ProjectPage = async ({ params }: Props) => {
 				</Button>
 			</div>
 			<Tabs defaultValue="board">
-				<div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-					<div className="flex items-center gap-4 mb-6">
+				<div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+					<div className="flex items-center gap-4">
 						<Button size="icon" variant="secondary">
 							<Filter />
 						</Button>
 						<Button size="icon" variant="secondary">
 							<Share />
 						</Button>
-
 						<div className="relative">
 							<div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground">
 								<Grid className="h-5 w-5" />
@@ -63,6 +64,7 @@ const ProjectPage = async ({ params }: Props) => {
 					<TimeLineView projectId={projectId} />
 				</TabsContent>
 			</Tabs>
+			<CreateTaskDialog projectId={projectId} />
 		</div>
 	);
 };

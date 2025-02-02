@@ -12,11 +12,9 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const createProject = async (req: Request, res: Response) => {
 	try {
-		const projects = await sql`DROP TABLE projects;`;
-		console.log(projects);
-		const columns = ["projectName", "description", "startDate"];
-		if ("endDate" in req.body) {
-			columns.push("endDate");
+		const columns = ["project_name", "description", "start_date"];
+		if ("end_date" in req.body) {
+			columns.push("end_date");
 		}
 		const project =
 			await sql`INSERT INTO projects ${sql(req.body, columns)} RETURNING *;`;

@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morganBody from "morgan-body";
 import { projectRouter } from "./routes/project.routes";
 import { tasksRouter } from "./routes/tasks.routes";
+import { searchRouter } from "./routes/search.routes";
 
 export const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ morganBody(app, {
 
 app.use("/projects", projectRouter);
 app.use("/tasks", tasksRouter);
+app.use("/search", searchRouter);
 
 app.use((req, res, next) => {
 	res.status(404).json({ message: "Route not found" });

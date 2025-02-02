@@ -1,13 +1,8 @@
 "use client";
-import {
-	SidebarGroupContent,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { useGetProjectsQuery } from "@/store/api";
-import Link from "next/link";
+
 import React from "react";
+import { SidebarGroupContent, SidebarMenu } from "@/components/ui/sidebar";
+import { useGetProjectsQuery } from "@/store/api";
 import SidebarLink from "./SidebarLink";
 
 const Projects = () => {
@@ -20,7 +15,7 @@ const Projects = () => {
 					<SidebarLink
 						key={project.id}
 						href={`/projects/${project.id}`}
-						label={project.projectname}
+						label={project.project_name}
 					/>
 				))}
 			</SidebarMenu>
