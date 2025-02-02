@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "node:path";
 import { app } from "./app";
-import { db } from "./database/db";
+import "./database/db-client";
 
 dotenv.config({ path: path.join(__dirname, "..", ".env") });
 

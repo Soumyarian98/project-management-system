@@ -19,6 +19,10 @@ morganBody(app, {
 	dateTimeFormat: "clf",
 });
 
+app.use("/test", (req, res) => {
+	res.json({message: "hello world"})
+})
+
 app.use("/projects", projectRouter);
 app.use("/tasks", tasksRouter);
 app.use("/search", searchRouter);
