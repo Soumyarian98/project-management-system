@@ -4,6 +4,7 @@ import morganBody from "morgan-body";
 import { projectRouter } from "./routes/project.routes";
 import { tasksRouter } from "./routes/tasks.routes";
 import { searchRouter } from "./routes/search.routes";
+import { authRouter } from "./routes/auth.routes";
 
 export const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use("/test", (req, res) => {
 	res.json({message: "hello world"})
 })
 
+app.use("/auth", authRouter)
 app.use("/projects", projectRouter);
 app.use("/tasks", tasksRouter);
 app.use("/search", searchRouter);

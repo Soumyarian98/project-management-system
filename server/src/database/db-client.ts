@@ -10,13 +10,13 @@ const sql = postgres({
 
 (async () => {
 	try {
-		console.log("Connecting to db")
+		console.log("Connecting to db");
 		await sql`SELECT 1`;
 		console.log("Database is connected!");
 	} catch (error: unknown) {
 		if (error instanceof Error)
 			console.error("Database connection failed db-client:", error.message);
-		process.exit(1);
+		// process.exit(1);
 	}
 })();
 
