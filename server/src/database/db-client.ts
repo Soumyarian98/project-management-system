@@ -8,10 +8,9 @@ const sql = postgres({
 	database: process.env.PG_DATABASE,
 });
 
-console.log( process.env.PG_USER,process.env.PG_PASSWORD);
-
 (async () => {
 	try {
+		console.log("Connecting to db")
 		await sql`SELECT 1`;
 		console.log("Database is connected!");
 	} catch (error: unknown) {

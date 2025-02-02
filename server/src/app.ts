@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import helmet from "helmet";
 import morganBody from "morgan-body";
 import { projectRouter } from "./routes/project.routes";
 import { tasksRouter } from "./routes/tasks.routes";
