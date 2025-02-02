@@ -6,7 +6,7 @@
 		"migrate": "ts-node -r ./src/utils/env-loader.ts ./src/database/migrate.ts",
 		"seed": "ts-node -r ./src/utils/env-loader.ts ./src/database/seed.ts",
 		"build": "rimraf dist && npx tsc",
-		"start": "npm run build && node dist/index.js",
+		"start": "npm run build && node --env-file=.env dist/index.js",
 		"watch": "npx tsc --watch",
 		"run": "node --env-file=.env --watch dist/index.js",
 		"dev": "npm run build && concurrently \"npx tsc --watch\" \"node --env-file=.env --watch dist/index.js\""
