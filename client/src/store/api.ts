@@ -44,11 +44,26 @@ export interface SearchResponse {
 	tasks?: Task[];
 }
 
+export interface User {
+	name: string;
+	email: string;
+	password: string;
+	username: string;
+	gender: string;
+}
+
 export const api = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
 	tagTypes: ["projects", "tasks"],
 	endpoints: (builder) => ({
+		createUser: builder.mutation<Project, User>({
+			query: (p) => ({
+				url: "/auth/signup",
+				method: "POST",
+				body: p,
+			}),
+		}),
 		getProjects: builder.query<Project[], void>({
 			query: () => "/projects",
 			providesTags: ["projects"],
