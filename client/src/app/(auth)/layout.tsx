@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
-import Image from "next/image";
-import Logo from "../_components/Logo";
+import ReduxProvider from "../_components/ReduxProvider";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -15,7 +13,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<div className="h-full flex flex-col justify-center items-center container max-w-[1024px]">
-			{children}
+			<ReduxProvider>{children}</ReduxProvider>
 		</div>
 	);
 }

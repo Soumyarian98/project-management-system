@@ -3,30 +3,26 @@
 import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import LogoWithLabel from "@/app/_components/LogoWithLabel";
 
 const SignIn = () => {
 	return (
-		<Card className="w-full md:w-[487px]">
+		<Card className="w-full md:w-[487px] shadow-sm">
 			<CardHeader className="flex items-center justify-center p-7">
-				<CardTitle className="text-2xl">Welcome Back!</CardTitle>
+				<CardTitle className="text-2xl font-semibold">
+					<LogoWithLabel />
+				</CardTitle>
 			</CardHeader>
-			<CardContent className="p-7">
-				<form className="space-y-6">
-					<div className="grid w-full max-w-sm items-center gap-1.5">
-						<Label htmlFor="email">Email</Label>
-						<Input id="email" required type="email" />
-					</div>
-					<div className="grid w-full max-w-sm items-center gap-1.5">
-						<Label htmlFor="password">Password</Label>
-						<Input id="password" required type="email" />
-					</div>
-					<Button className="w-full" size="lg">
-						Login
-					</Button>
-				</form>
+			<CardContent className="px-7">
+				{/* <SignupForm /> */}
+
+				<p className="mt-6 text-sm">
+					Don't have an account?{" "}
+					<Link href="/signup" className="text-blue-700 font-semibold">
+						Sign Up
+					</Link>
+				</p>
 			</CardContent>
 		</Card>
 	);

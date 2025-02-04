@@ -24,7 +24,7 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} antialiased`}>
 				{/* <DashboardWrapper>{children}</DashboardWrapper> */}
 				{children}
-				<Toaster />
+				<Toaster closeButton richColors />
 			</body>
 		</html>
 	);

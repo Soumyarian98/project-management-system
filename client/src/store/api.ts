@@ -46,7 +46,6 @@ export interface SearchResponse {
 
 export interface User {
 	name: string;
-	email: string;
 	password: string;
 	username: string;
 	gender: string;
@@ -117,4 +116,5 @@ export const {
 	useCreateTasksMutation,
 	useUpdateTaskStatusMutation,
 	useSearchQuery,
+	useCreateUserMutation,
 } = api;

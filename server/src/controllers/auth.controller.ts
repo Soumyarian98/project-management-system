@@ -15,6 +15,7 @@ import {
 	type ForgotPasswordCommandInput,
 	ConfirmForgotPasswordCommand,
 	type ConfirmForgotPasswordCommandInput,
+	UsernameExistsException,
 } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from "node:crypto";
 
@@ -45,7 +46,7 @@ const client = new CognitoIdentityProviderClient({
 
 export const signUp = async (req: Request, res: Response) => {
 	try {
-		const { username, password, email, name, gender } = req.body;
+		const { username, password, name, gender } = req.body;
 		const input: SignUpCommandInput = {
 			ClientId: clientId,
 			SecretHash: computeSecretHash(username, clientId, clientSecret),
@@ -53,7 +54,7 @@ export const signUp = async (req: Request, res: Response) => {
 			Password: password,
 			UserAttributes: [
 				{ Name: "name", Value: name },
-				{ Name: "email", Value: email },
+				{ Name: "email", Value: username },
 				{ Name: "gender", Value: gender },
 			],
 		};
@@ -62,7 +63,11 @@ export const signUp = async (req: Request, res: Response) => {
 		res.json(response);
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ message: "Failed to sign up" });
+		if (error instanceof UsernameExistsException) {
+			res.status(400).json({ message: error.message });
+		} else {
+			res.status(500).json({ message: "Failed to sign up" });
+		}
 	}
 };
 export const confirmSignup = async (req: Request, res: Response) => {
