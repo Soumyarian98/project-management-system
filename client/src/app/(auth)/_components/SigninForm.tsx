@@ -1,8 +1,7 @@
+"use client";
+
 import React from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import {
 	Form,
@@ -12,18 +11,12 @@ import {
 	FormControl,
 	FormMessage,
 } from "@/components/ui/form";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useCreateUserMutation } from "@/store/api";
-import { useRouter } from "next/navigation";
 import LoadingButton from "@/app/_components/LoadingButton";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -32,9 +25,8 @@ const formSchema = z.object({
 	gender: z.string(),
 });
 
-const SignupForm = () => {
+const SigninForm = () => {
 	const router = useRouter();
-
 	const [createUser, { isLoading }] = useCreateUserMutation();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -59,19 +51,6 @@ const SignupForm = () => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Name</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<FormField
 					control={form.control}
 					name="email"
@@ -99,34 +78,12 @@ const SignupForm = () => {
 					)}
 				/>
 
-				<FormField
-					control={form.control}
-					name="gender"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Gender</FormLabel>
-							<FormControl>
-								<Select {...field} onValueChange={field.onChange}>
-									<SelectTrigger className="w-full">
-										<SelectValue />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value="male">Male</SelectItem>
-										<SelectItem value="female">Female</SelectItem>
-										<SelectItem value="othehr">Other</SelectItem>
-									</SelectContent>
-								</Select>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<LoadingButton isLoading={isLoading} type="submit">
-					Create Account
+					Login
 				</LoadingButton>
 			</form>
 		</Form>
 	);
 };
 
-export default SignupForm;
+export default SigninForm;

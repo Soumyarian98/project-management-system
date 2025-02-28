@@ -18,6 +18,7 @@ import {
 	UsernameExistsException,
 } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from "node:crypto";
+import sql from "../database/db-client";
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID as string;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY as string;
@@ -58,8 +59,10 @@ export const signUp = async (req: Request, res: Response) => {
 				{ Name: "gender", Value: gender },
 			],
 		};
+
 		const command = new SignUpCommand(input);
 		const response = await client.send(command);
+		const dbUser = sql`INSERT INTO users()`;
 		res.json(response);
 	} catch (error) {
 		console.log(error);
@@ -125,6 +128,17 @@ export const signIn = async (req: Request, res: Response) => {
 		};
 		const command = new InitiateAuthCommand(input);
 		const response = await client.send(command);
+		if (
+			response.AuthenticationResult?.AccessToken &&
+			response.AuthenticationResult.RefreshToken
+		) {
+			res.cookie("accessToken", response.AuthenticationResult.AccessToken, {
+				domain: "http://localhost:3000",
+				httpOnly: true,
+				path: "/",
+				sameSite: "none",
+			});
+		}
 		res.json(response);
 	} catch (error) {
 		console.log(error);

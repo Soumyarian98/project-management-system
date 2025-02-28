@@ -63,6 +63,16 @@ export const api = createApi({
 				body: p,
 			}),
 		}),
+		login: builder.mutation<
+			{ message: string },
+			Pick<User, "password" | "username">
+		>({
+			query: (p) => ({
+				url: "/auth/signin",
+				method: "POST",
+				body: p,
+			}),
+		}),
 		getProjects: builder.query<Project[], void>({
 			query: () => "/projects",
 			providesTags: ["projects"],
